@@ -1,0 +1,71 @@
+<!doctype html>
+<head>
+  <meta charset="UTF-8" />
+
+  <title>Alien Where? - UFO Sightings App</title>
+  <meta name="description" content="Alien Where? - UFO Sightings App">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+</head>
+
+<body>
+  
+  <div id="main">
+    <div id="logo"><img src="icons/ufo_72.png" /><h2><span id="state"></span> UFO&nbsp;Sightings!</h2></div>
+    <br/><a href="javascript:history.back()">&#8592; Back</a>
+    <div id="info"></div>
+  </div>
+
+  <script type="text/javascript">
+    var state;
+    Parse.initialize(APP_ID, JS_KEY);
+    
+    $(document).ready(function() {
+      var params = getParams(document.location.search);
+      var id = params.id;
+      state = decodeURIComponent(params.state);
+      $('#state').text(state);
+      
+      var Sighting = Parse.Object.extend("sightings");
+      var query = new Parse.Query(Sighting);
+      query.get(id, {
+        success: function(event) {
+          var sDate = new Date(event.get('sighted_at'));
+          var rDate = new Date(event.get('reported_at'));
+          var html = '<div id="map-static">';
+          var staticUrl = 'http://maps.googleapis.com/maps/api/staticmap?key=' + API_KEY;
+              staticUrl += '&size=700x250&maptype=roadmap';
+              staticUrl += '&visible=' + encodeURIComponent(event.get('city') + ',' + event.get('state'));
+              staticUrl += '&markers=' + event.get('latitude') + ',' + event.get('longitude');
+          html += '<img src="' + staticUrl + '" />';
+          html += '</div>';
+
+          html += '<strong>Location:</strong> ' + event.get('location_str') + '<br/>';
+          html += '<strong>Duration:</strong> ' + event.get('duration_str') + '<br/>';
+          html += '<strong>Shape:</strong> ' + event.get('shape') + '<br/>';
+          html += '<strong>Sighting:</strong> ' + sDate.toLocaleDateString() + '<br/>';
+          html += '<strong>Reported:</strong> ' + rDate.toLocaleDateString() + '<br/>';
+          html += '<strong>Description:</strong><br/><div id="desc">' + event.get('description') + '</div><br/>';
+          $('#info').html(html);
+        },
+        error: function(object, error) {
+          alert('Error retriving info for: ' + id);
+        }
+      });
+    });
+    
+    function getParams(qs) {
+      qs = qs.split("+").join(" ");
+      var params = {}, tokens,
+          re = /[?&]?([^=]+)=([^&]*)/g;
+      while (tokens = re.exec(qs)) {
+        params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+      }
+      return params;
+    }
+  </script>
+</body>
+
+</html>

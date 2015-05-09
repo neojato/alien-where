@@ -1,0 +1,112 @@
+<!doctype html>
+<head>
+  <meta charset="UTF-8" />
+
+  <title>Alien Where? - UFO Sightings App</title>
+  <meta name="description" content="Alien Where? - UFO Sightings App">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+</head>
+
+<body>
+  <div id="main">
+    <div id="logo"><img src="icons/ufo_72.png" /><h2><span id="state"></span> UFO&nbsp;Sightings!</h2></div>
+    <br/><a href="javascript:history.back()">&#8592; Back</a>
+    <div id="map-canvas"></div>
+    <p>Select city map pin to see local sightings!</p>
+    <div id="data"></div>
+  </div>
+
+  <script type="text/javascript">
+    var state;
+    Parse.initialize(APP_ID, JS_KEY);
+    
+    $(document).ready(function() {
+      var params = getParams(document.location.search);
+      state = decodeURIComponent(params.state);
+      $('#state').text(state);
+      var script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=' + API_KEY;
+      document.body.appendChild(script);
+    });
+    
+    function initialize() {
+      var Sightings = Parse.Object.extend("sightings");
+      var query = new Parse.Query(Sightings);
+      query.equalTo("state", state);
+      query.exists("city");
+      query.ascending("city");
+      query.descending("sighted_at");
+      query.limit(1000);
+      query.find({
+        success: function(results) {
+          var bound = new google.maps.LatLngBounds();
+          var mapOptions = {
+              zoom: 6,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+          var mapDiv = document.getElementById('map-canvas');
+          var map = new google.maps.Map(mapDiv, mapOptions);
+          var infoWindow = new google.maps.InfoWindow();
+          var marker, point;
+          for(var i=0; i < results.length; i++) {
+            var object = results[i];
+            point = new google.maps.LatLng(parseFloat(object.get('latitude')), parseFloat(object.get('longitude')));
+            bound.extend(point);
+            marker = new google.maps.Marker({
+                position: point,
+                map: map,
+                title: object.get('city')
+            });
+            
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+              return function() {
+                cityLookup(marker.title);
+                infoWindow.setContent('<h2>'+marker.title+'</h2>');
+                infoWindow.open(map, marker);
+              };
+            })(marker, i));
+          }
+          map.setCenter(bound.getCenter());
+          map.fitBounds(bound);
+        }
+      });
+    }
+
+    function cityLookup(city) {
+      var Sightings = Parse.Object.extend("sightings");
+      var query = new Parse.Query(Sightings);
+      query.equalTo("state", state);
+      query.equalTo("city", city);
+      query.ascending("city");
+      query.descending("sighted_at");
+      query.limit(1000);
+      query.find({
+        success: function(results) {
+          var html = '<ol>';
+          for(var i=0; i < results.length; i++) {
+            var object = results[i];
+            var sDate = new Date(object.get('sighted_at'));
+            html += '<li>' + sDate.toLocaleDateString() + ' - ' + object.get('shape') + '&nbsp;&#8594;&nbsp;<a href="info.html?state=' + encodeURIComponent(state) + '&id=' + object.id + '">More&nbsp;info...</a></li>';
+          }
+          $('#data').html(html + '</ol>');
+        }
+      });
+    }
+    
+    function getParams(qs) {
+      qs = qs.split("+").join(" ");
+      var params = {}, tokens,
+          re = /[?&]?([^=]+)=([^&]*)/g;
+      while (tokens = re.exec(qs)) {
+        params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+      }
+      return params;
+    }
+  </script>
+</body>
+
+</html>
