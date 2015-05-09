@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns     = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id        = "org.trinominis.ufo"
+        version   = "1.0.0">
+    <name>Alien Where?</name>
+
+    <description>
+      Demo (Google Maps API + PhoneGap) app for GeoDevKC and Michigan DevFest 2015
+    </description>
+
+    <author href="http://www.trinominis.com" email="trinominis@gmail.com">
+        trinominis (Kyle Paul)
+    </author>
+
+    <feature name="http://api.phonegap.com/1.0/device" />
+    <feature name="http://api.phonegap.com/1.0/geolocation"/>
+
+    <preference name="phonegap-version" value="3.7.0" />
+    <preference name="orientation"      value="default" />
+    <preference name="target-device"    value="universal" />
+    <preference name="fullscreen"       value="false" />
+
+    <gap:platform name="android" />
+	
+    <icon src="res/mdpi_ic_launcher.png"     gap:platform="android"    gap:density="mdpi" />
+    <icon src="res/hdpi_ic_launcher.png"     gap:platform="android"    gap:density="hdpi" />
+    <icon src="res/xhdpi_ic_launcher.png"    gap:platform="android"    gap:density="xhdpi" />
+    <icon src="res/xxhdpi_ic_launcher.png"   gap:platform="android"    gap:density="xxhdpi" />
+    <icon src="res/xxxhdpi_ic_launcher.png"  gap:platform="android"    gap:density="xxxhdpi" />
+</widget>

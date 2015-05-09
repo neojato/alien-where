@@ -75,3 +75,38 @@ body {
   padding: 5px;
   border: 1px solid silver;
 }
+
+@media only screen and (max-width: 420px) {
+  #main {
+    width: auto;
+    margin: auto;
+    text-align: left;
+    padding: 5px;
+  }
+
+  #front-logo img {
+    float: left;
+    padding: 10px 10px 0 0;
+    width: 48%;
+  }
+
+  #data {
+    clear: both;
+    width: 96%;
+    height: 250px;
+    text-align: left;
+    overflow: auto;
+    padding: 5px;
+    border: 0 solid silver;
+  }
+
+  #desc {
+    clear: both;
+    width: 96%;
+    height: 160px;
+    text-align: left;
+    overflow: auto;
+    padding: 5px;
+    border: 1px solid silver;
+  }
+}
