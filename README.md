@@ -7,7 +7,7 @@ Demo (Google Maps API + PhoneGap) app for GeoDevKC and Michigan DevFest 2015
 * [Parse.com] Application ID and JavaScript API Key
 
 ### Sources/Credits:
-* 60,000+ UFO Sightings from the National UFO Reporting Center
+* 60,000+ UFO Sightings from the [National UFO Reporting Center]
 * Aforementioned Dataset from [InfoChimps' Data Marketplace]
 * The [Android robot] is reproduced or modified from work created and shared by Google and used according to terms described in the Creative Commons 3.0 Attribution License.
 
