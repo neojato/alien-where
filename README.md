@@ -2,6 +2,8 @@
 ### An Intro to Google Maps APIs
 Demo ([Google Maps API] + [PhoneGap Build]) app for [GeoDevKC] and [Michigan DevFest 2015]
 
+#### Slides
+* [Alien Where?]
 
 #### Requirements:
 * Google API Key from [Developer Console]
@@ -17,6 +19,7 @@ Demo ([Google Maps API] + [PhoneGap Build]) app for [GeoDevKC] and [Michigan Dev
 [PhoneGap Build]: https://build.phonegap.com
 [GeoDevKC]: http://www.meetup.com/GeoDevKC-Meetup-Group/events/221782858/
 [Michigan DevFest 2015]: http://michigandevfest.com/schedule/#session-15
+[Alien Where?]: https://goo.gl/SVe9nJ
 [Developer Console]: http://cloud.google.com/console
 [Parse.com]: https://www.parse.com/
 [National UFO Reporting Center]: http://www.nuforc.org/
